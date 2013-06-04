@@ -1,0 +1,262 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=BIG5">
+        <title>Checker Game</title>
+        <link href="./css/jquery-ui-1.8.19.custom.css" rel="stylesheet" type="text/css" media="screen" />
+        <link href="./css/index.css" rel="stylesheet" type="text/css" media="screen" />
+        <script src="./lib/jQueryLibrary.js" type="text/javascript">
+        </script>
+        <script src="./lib/main.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+        <div class="bg">
+            <ul>
+                <li>
+                    <a href="#tabs-1">Welcome</a>
+                </li>
+                <li>
+                    <a href="#tabs-2">Game Screen</a>
+                </li>
+            </ul>
+            <div class="tabs" id="tabs-1">
+                <div class="tab_frame">
+                    <div class="intro_area">
+                        <div class="title_line">
+                            <h3 class="title">Checker game by Alpha-Beta Search Algorithm</h3>
+                        </div>
+                        <div class="description">
+                            <div id="paginationdemo" class="demo">
+                                <h4 class="title">Description</h4>
+                                <div id="p1" class="pagedemo _current" style="">
+                                    <ul>
+                                        <li>
+                                            <div>
+                                                The checkerboard has 64 alternating gray and green squares.
+                                            </div>
+                                            <div>
+                                                <img src="img/board.png" alt="" />
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div>
+                                                Each player starts out with 12 playing pieces. Players will take turn to move their own tiles diagonally.
+                                            </div>
+                                            <div>
+                                                <img src="img/max.png" alt="" />: Max player will move frist from top-side direction to bottom-side direction.
+                                            </div>
+                                            <div>
+                                                <img src="img/min.png" alt="" />: Min player will move after Max player from bottom-side direction to top-side direction.
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div id="p2" class="pagedemo" style="display:none;">
+                                    <ul>
+                                        <li>
+                                            <div>
+                                                There are two types of moves: regular moves and jumps.
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div>
+                                                In a regular move, a piece can move forward (and only forward) one 
+                                                square diagonally to an adjacent square that  is empty.
+                                            </div>
+                                            <div>
+                                                <img src="img/intro-1.png" alt="" />: The left-hand side picture show the case of a regular move when Max player drags one of his tiles. It also indicates how many paths, such as P1 and P2, the player can choose at the same time. What the player can do is dragging the tile to one of the squares with the label P1 or P2. Then, the move will be finished.
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div>
+                                                In a jump, a piece can jump over and capture an opponent's piece. A piece can only jump forward and diagonally to a 
+                                                position that is empty, and by capturing an opponent's piece.
+                                            </div>
+                                            <div>
+                                                <img src="img/intro-2.png" alt="" />: A move can also consist of 
+                                                consecutive jumps, as long as each jump is forward and diagonal, over an opponent's  
+                                                piece, and land over an empty position.  All opponent's pieces along the path of the 
+                                                consecutive jumps are captured. <label class="point">In addition, every opportunity to jump  must  be taken.</label> In  
+                                                the case where there are different jump sequences available, the player may choose which 
+                                                sequence to make, whether it results in  the most pieces being taken or not.
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div id="p3" class="pagedemo" style="display:none;">
+                                    <ul>
+                                        <li>
+                                            <img src="img/intro-3.png" alt="" />: When a player cannot move any of his/her pieces because they are blocked, the player 
+                                            will forfeit his/her turn and the other player will make the next move. A player cannot  
+                                            voluntarily forfeit his/her turn if there are moves or jumps that can be made. 
+                                        </li>
+                                        <li>
+                                            <img src="img/intro-4.png" alt="" />: The game ends when one player captures all of  the other player's pieces, or when neither 
+                                            player has any legal moves that he/she can make. At the end of the game, the score for  
+                                            each player is computed by adding up the total points for the remaining pieces. <label class="point">Each of 
+                                            the player's pieces that are at the far end of the board is worth two points, and all other  
+                                            pieces are worth one point. The player with the higher point score wins.</label> If all of the 
+                                            pieces of a player have been captured, the player has a score of zero.
+                                        </li>
+                                    </ul>
+                                </div>
+								<div id="description"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="setting_area">
+                        <div class="step_info">
+                            <h4 class="title">Please type your nickname and choose all options below. After that, click the button "<label class="point">Start to fight</label>".</h4>
+                        </div>
+                        <div>
+                            <table id="setting_table">
+                                <tr>
+                                    <td align="right">Nickname:</td>
+                                    <td><input type="text" id="nickname" maxlength="8" value="idiot"/></td>
+                                </tr>
+                                <tr>
+                                    <td align="right">Move first:</td>
+                                    <td><input type="radio" name="move_order" value="1" checked="true"/>Yes <input type="radio" name="move_order" value="0"/>No</td>
+                                </tr>
+                                <tr>
+                                    <td align="right">Opponent's Level:</td>
+                                    <td>
+                                        <select id="game_level">
+                                            <option value="1" selected="true">.... Heaven ....</option>
+                                            <option value="2">.... monster ....</option>
+                                            <option value="3">.... Demon ....</option>
+                                            <option value="4">.... Satan ....</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" align="center"><input type="button" id="start_button" value="Start to fight!"/><input type="hidden" id="isPress" value="0"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tabs" id="tabs-2">
+                <div class="tab_frame">
+                    <div class="show">
+                        <table class="board">
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="info">
+                        <div>
+                            <table border="1" class="record_table">
+                                <tr>
+                                    <td align="center" class="user max_name"></td>
+                                    <td class="center_col" align="center">V.S.</td>
+                                    <td align="center" class="user min_name"></td>
+                                </tr>
+                                <tr>
+                                    <td align="center"><img src="img/max.png" alt="" /></td><td align="center"></td>
+                                    <td align="center"><img src="img/min.png" alt="" /></td>
+                                </tr>
+                                <tr>
+                                    <td class="max_tiles" align="center">12</td>
+                                    <td class="center_col" align="center">No. of Tiles</td>
+                                    <td class="min_tiles" align="center">12</td>
+                                </tr>
+                                <tr>
+                                    <td class="max_score" align="center">12</td>
+                                    <td class="center_col" align="center">Score</td>
+                                    <td class="min_score" align="center">12</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="system">
+                            <input type="button" id="forfeit" value="forfeit"/><input type="button" id="surrender" value="surrender"/><input type="button" id="new_game" value="restart"/>
+                        </div>
+                        <div class="output">
+                            <textarea rows="6" cols="6"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
